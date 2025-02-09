@@ -6,25 +6,34 @@
     <title>Document</title>
     <link rel="stylesheet" href="styling.css">
 </head>
-<body>
+<body style="background-color: black";>
+    <div id ="canvas_container">
+        <canvas id="canvas" style="border: 2px solid white;"></canvas>
+    </div>
+    
     <div id="buttonGrid">
-        <button class="grid-button" id="stone">Stone</button>
+        <button class="grid-button" id="rocks">Rocks</button>
         <button class="grid-button" id="sand">Sand</button>
         <button class="grid-button" id="water">Water</button>
         <button class="grid-button" id="smoke">Smoke</button>
-    </div>
-    <div id ="canvas_container">
-        <canvas id="canvas" height="500" width="500" style="border: 2px solid green;"></canvas>
+        <button class="grid-button" id="wall">Wall</button>
+        <button class="grid-button" id="virus">Virus</button>
     </div>
     <div id ="settings_container">
-        <label for="brush_size_slider">Brush size</label>
-        <input type="range" id="brush_size_slider" min="0" max="10" value="1">
-        <span id="brush_value">1</span>
-        <label for="mySlider">Cell size</label>
+        <label for="brush_size_slider" style="color:white">Brush size</label>
+        <input type="range" id="brush_size_slider" min="0" max="40" value="1">
+        <span id="brush_value"  style="color:white">1</span>
+        <label for="mySlider" style="color:white">Cell size</label>
         <input type="range" id="cell_size_slider" min="0" max="50" value="1">
-        <span id="cell_value">1</span>
+        <span id="cell_value"  style="color:white">1</span>
         <button id="clear_button">Clear</button>
+        <button id="pause_button">Pause</button>
        
+       
+    </div>
+    <div style="display: flex;flex-direction: row; ">
+    <p style="color:white"> Number of pixels:</p>
+    <p id="pixel_number_paragraph" style="color: white";></p>
     </div>
     <script src="script.js"></script>
 </body>

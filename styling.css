@@ -3,14 +3,18 @@
     justify-content: center;
     width:100%;
     display:flex;
+    background-color: black;
+}
+#canvas{
+    margin-left: 5%;
+    margin-right:5%;
 }
 #settings_container{
     align-items: center;
     justify-content: center;
     width:100%;
     display:flex;
-    position:absolute;
-    transform:translateY(-3000%)
+    
     
 }
 #brush_value{
@@ -20,6 +24,8 @@
     display: grid;
     grid-template-columns: repeat(5, 50px); /* 5 columns */
     grid-gap: 5px;
+    background-color: black;
+    margin: 0.3%;
 }
 .grid-button {
     display:flex;
@@ -32,3 +38,5 @@
     justify-content: center;
     align-items: center;  
 }
+
+
