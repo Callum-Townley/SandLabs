@@ -6,35 +6,49 @@
     <title>Document</title>
     <link rel="stylesheet" href="styling.css">
 </head>
-<body style="background-color: black";>
-    <div id ="canvas_container">
-        <canvas id="canvas" style="border: 2px solid white;"></canvas>
-    </div>
-    
-    <div id="buttonGrid">
-        <button class="grid-button" id="rocks">Rocks</button>
-        <button class="grid-button" id="sand">Sand</button>
-        <button class="grid-button" id="water">Water</button>
-        <button class="grid-button" id="smoke">Smoke</button>
-        <button class="grid-button" id="wall">Wall</button>
-        <button class="grid-button" id="virus">Virus</button>
-    </div>
-    <div id ="settings_container">
-        <label for="brush_size_slider" style="color:white">Brush size</label>
-        <input type="range" id="brush_size_slider" min="0" max="40" value="1">
-        <span id="brush_value"  style="color:white">1</span>
-        <label for="mySlider" style="color:white">Cell size</label>
-        <input type="range" id="cell_size_slider" min="0" max="50" value="1">
-        <span id="cell_value"  style="color:white">1</span>
-        <button id="clear_button">Clear</button>
-        <button id="pause_button">Pause</button>
-       
-       
-    </div>
-    <div style="display: flex;flex-direction: row; ">
-    <p style="color:white"> Number of pixels:</p>
-    <p id="pixel_number_paragraph" style="color: white";></p>
-    </div>
-    <script src="script.js"></script>
+<body style="background-image:url('Assets/SandLabs background V2.png'); background-size: cover;">
+        <div>
+            <div style="display:flex; width:100%; height:100px; ; justify-content: center;">
+                <img src="Assets/SandLabs logo.png">
+            </div>
+            <div id ="canvas_container">
+                <canvas id="canvas" style="border: 2px solid white;"></canvas>
+            </div>
+                <div id="category_bar">
+                    <button class="category" data-category="solid">Solids</button>
+                    <button class="category" data-category="liquid">Liquids</button>
+                    <button class="category" data-category="gas">Gas</button>
+                    <button class="category" data-category="particles">Particles</button>
+                    <button class="category" data-category="celestial_bodies">Celestial bodies</button>
+                    <button class="category" data-category="weapons">Weapons</button>
+                    <button class="category" data-category="energy">Energy</button>
+                    <button class="category" data-category="special">Special</button>
+                </div>
+            <div id="buttonGrid" style="width:100% ;">
+                <!--spot for buttons !-->
+            </div>
+            <div id ="settings_container">
+                <label for="brush_size_slider" style="color:white">Brush size</label>
+                <input type="range" id="brush_size_slider" min="1" max="40" value="1">
+                <span id="brush_value"  style="color:white">1</span>
+                <label for="cell_size_slider" style="color:white">Cell size</label>
+                <input type="range" id="cell_size_slider" min="1" max="50" value="1">
+                <span id="cell_value"  style="color:white">1</span>
+                <label for="tick_speed_slider" style="color:white">Tick speed</label>
+                <input type="text" id="tick_speed_slider" value="10">
+                <button id="clear_button">Clear</button>
+                <button id="pause_button">Pause</button>
+            </div>
+                </div>
+                <div style="display: flex;flex-direction: row; ">
+                <p style="color:white"> Number of pixels:</p>
+                <p id="pixel_number_paragraph" style="color: white";></p>
+                <p style="color:white; margin-left:5%"> pixel type:</p>
+                <p id="pixel_type_paragraph" style="color:white";></p>
+                <p style="color:white; margin-left:5%"> pixel temperature:</p>
+                <p id="pixel_temperature_paragraph" style="color:white";></p>
+                </div>
+                <script src="script.js"></script>
+        </div>
 </body>
 </html>
