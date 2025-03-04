@@ -13,8 +13,7 @@ const clearButton = document.getElementById("clear_button")
 const pauseButton = document.getElementById("pause_button")
 
 
-
-
+let setTemperature=8000
 let pixelNumber = 0;
 let intervalId;
 let isPaused = false
@@ -30,7 +29,7 @@ let buttonGrid = document.getElementById("buttonGrid")
 let mouseX = 0, mouseY = 0;
 let cursorSize = 100
 let isDrawing = false;
-
+let selected_pixel_paragraph= document.getElementById("selected_pixel_paragraph")
 
 
 
@@ -56,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonGrid.querySelectorAll(".grid-button").forEach(button => {
         button.addEventListener("click", () => {
             currentType = button.id;
+            selected_pixel_paragraph.textContent = button.id
         });
     });
 });
@@ -101,6 +101,7 @@ class Pixel {
         sandGrid[x][y] = this;
         this.decay = this.typeData.decay
         this.decay_timer = 0
+        this.movetime=0;
     }
     meltPixel() {
 
@@ -265,7 +266,7 @@ let types = {
             "00||00||00",
             "22%70||11||22%70"
         ],
-        "weight": 5,
+        "weight": 150,
         "form": "solid",
         "category": "solid",
         "melt_point": 1700,
@@ -280,7 +281,7 @@ let types = {
             "00||00||00",
             "00||11||00"
         ],
-        "weight": 3,
+        "weight": 175,
         "form": "solid",
         "category": "solid",
         "melt_point": 1700,
@@ -295,11 +296,28 @@ let types = {
             "22||00||22",
             "22||11%70||22"
         ],
-        "weight": 2,
+        "weight": 100,
         "form": "liquid",
         "category": "liquid",
         "freeze_to": "ice",
         "melt_point": 0,
+        "boil_point": 100,
+        "boil_to": "steam",
+        "mix":["salt"]
+    },
+    "salt_water": {
+        "name": "salt_water",
+        "color": "#4682B4",
+        "behavior": [
+            "00||00||00",
+            "22||00||22",
+            "22||11%70||22"
+        ],
+        "weight": 102,
+        "form": "liquid",
+        "category": "liquid",
+        "freeze_to": "ice",
+        "melt_point": -5,
         "boil_point": 100,
         "boil_to": "steam"
     },
@@ -337,7 +355,7 @@ let types = {
             "R:virus||R:virus||R:virus",
             "22%70||R:virusAND11||22%70"
         ],
-        "weight": 2,
+        "weight": 100,
         "form": "solid",
         "category": "special"
     },
@@ -349,7 +367,7 @@ let types = {
             "CLAND22||00||CLAND22",
             "22%70||CLAND11||22%70"
         ],
-        "weight": 0.5,
+        "weight": 100,
         "form": "liquid",
         "category": "liquid",
         "melt_point": 0,
@@ -366,7 +384,7 @@ let types = {
             "11||00||11",
             "22||11||22"
         ],
-        "weight": 0.5,
+        "weight": 1,
         "form": "gas",
         "category": "gas",
         "melt_point": -80,
@@ -382,7 +400,7 @@ let types = {
             "00||00||00",
             "11||11%70||11"
         ],
-        "weight": 0.5,
+        "weight": 105,
         "form": "solid",
         "melt_point": 200,
         "melt_to": "ash",
@@ -409,7 +427,7 @@ let types = {
             "22||00||22",
             "00||00||00"
         ],
-        "weight": 1000,
+        "weight": 1,
         "form": "gas",
         "category": "energy",
         "immune": "true",
@@ -425,7 +443,7 @@ let types = {
             "22||00||22",
             "00||00||00"
         ],
-        "weight": 1000,
+        "weight": 1,
         "form": "gas",
         "category": "energy",
         "immune": "true",
@@ -441,7 +459,7 @@ let types = {
             "22||00||22",
             "22||11||22"
         ],
-        "weight": 1000,
+        "weight": 175,
         "form": "liquid",
         "category": "liquid",
         "baseTemp": 2000,
@@ -457,7 +475,7 @@ let types = {
             "00||00||00",
             "22||11||22"
         ],
-        "weight": 5,
+        "weight": 100,
         "form": "solid",
         "category": "solid",
         "baseTemp": -20,
@@ -489,7 +507,7 @@ let types = {
             "00||00||00",
             "22%70||11||22%70"
         ],
-        "weight": 5,
+        "weight": 150,
         "form": "solid",
         "category": "solid",
         "melt_point": 1700,
@@ -503,7 +521,7 @@ let types = {
             "00||00||00",
             "22%70||11||22%70"
         ],
-        "weight": 5,
+        "weight": 100,
         "form": "solid",
         "category": "solid",
         "melt_point": 100,
@@ -535,7 +553,7 @@ let types = {
             "22||00||22",
             "22||11||22"
         ],
-        "weight": 1,
+        "weight": 175,
         "form": "liquid",
         "category": "liquid",
         "melt_point": 1700,
@@ -551,7 +569,7 @@ let types = {
             "00||00||00",
             "22||11||22"
         ],
-        "weight": 1,
+        "weight": 175,
         "form": "solid",
         "category": "solid",
         "melt_point": 1600,
@@ -598,7 +616,7 @@ let types = {
             "22||00||22",
             "22||11||22"
         ],
-        "weight": 1,
+        "weight": 80,
         "form": "liquid",
         "baseTemp": -200,
         "category": "liquid",
@@ -633,7 +651,7 @@ let types = {
             "00||00||00",
             "22||11||22"
         ],
-        "weight": 1,
+        "weight": 80,
         "form": "solid",
         "baseTemp": -200,
         "melt_point": -195,
@@ -668,7 +686,7 @@ let types = {
             "22||00||22",
             "11||11%50||11"
         ],
-        "weight": 1,
+        "weight": 120,
         "form": "liquid",
         "category": "liquid",
         "boil_point": -180,
@@ -687,7 +705,7 @@ let types = {
             "00||00||00",
             "11||11%50||11"
         ],
-        "weight": 1,
+        "weight": 120,
         "form": "solid",
         "category": "solid",
         "boil_point": -180,
@@ -705,7 +723,7 @@ let types = {
             "00||00||00",
             "11%30AND22||11||11%30AND22"
         ],
-        "weight": 1,
+        "weight": 104,
         "form": "solid",
         "category": "solid",
         "melt_point": 800,
@@ -721,7 +739,7 @@ let types = {
             "00||00||00",
             "11%30AND22||11||11%30AND22"
         ],
-        "weight": 1,
+        "weight": 600,
         "form": "solid",
         "category": "solid",
         "baseTemp": -100,
@@ -739,7 +757,7 @@ let types = {
             "22||00||22",
             "22||11%70||22"
         ],
-        "weight": 1,
+        "weight": 150,
         "form": "liquid",
         "category": "liquid",
         "baseTemp": -100,
@@ -759,7 +777,7 @@ let types = {
             "00||00||00",
             "11%30AND22||11||11%30AND22"
         ],
-        "weight": 1,
+        "weight": 150,
         "form": "solid",
         "category": "solid",
         "baseTemp": -110,
@@ -784,6 +802,23 @@ let types = {
         "baseTemp": 20,
         "melt_point": -34,
         "freeze_to": "chlorine",
+
+
+
+
+    },
+    "grey_goo": {
+        "name": "chlorine_gas",
+        "color": "#808080",
+        "behavior": [
+            "11%20ANDR:grey_goo||R:grey_goo||11%20ANDR:grey_goo",
+            "R:grey_goo||00||R:grey_goo",
+            "22ANDR:grey_goo||11%90ANDR:grey_goo||22ANDR:grey_goo"
+        ],
+        "weight": 100,
+        "form": "solid",
+        "category": "special",
+        "decay":20
 
 
 
@@ -873,6 +908,7 @@ canvas.addEventListener("mousemove", (event) => {
             for (j = 0 - Math.floor(brush_size_slider.value / 2); j < Math.ceil(brush_size_slider.value / 2); j++) {
                 if (isEmpty(col + i, row + j)) {
                     createPixel(col + i, row + j, currentType)
+                    
                 }
 
 
@@ -902,11 +938,10 @@ function updateGrid() {
         pixel = currentPixels[i]
         x = pixel.x
         y = pixel.y
-        //documents pixel count
 
         ctx.fillStyle = pixel.color
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize)
-    }
+}
     pixelNumber = currentPixels.length
     pixel_number_paragraph.textContent = pixelNumber
     drawCursor(mouseX, mouseY, cursorSize)
@@ -939,7 +974,7 @@ function Clear_pixel(Clear_Cells, pixel) {
     if (Clear_Cells.length > 0) {
         var coords = Clear_Cells[Math.floor(Math.random() * Clear_Cells.length)]
 
-        if (isInBounds(coords.x, coords.y) && sandGrid[coords.x][coords.y] != 0 && sandGrid[coords.x][coords.y].type != "acid") {
+        if (isInBounds(coords.x, coords.y) && sandGrid[coords.x][coords.y] != 0 && !(["acid","acid_ice","acid_gas","invincible wall"].includes(sandGrid[coords.x][coords.y].type))) {
             currentPixels = currentPixels.filter(p => !((p.x === coords.x && p.y === coords.y) || (p.x === pixel.x && p.y === pixel.y)));
             sandGrid[pixel.x][pixel.y] = 0
             sandGrid[coords.x][coords.y] = 0
@@ -950,12 +985,23 @@ function Clear_pixel(Clear_Cells, pixel) {
 
     }
 }
+function Mix_pixel(pixel,Nextcoords){
+    if(isInBounds(Nextcoords.x,Nextcoords.y)&&pixel.typeData.mix && pixel.typeData.mix.includes(sandGrid[Nextcoords.x][Nextcoords.y].type)){
+        mix_to= sandGrid[Nextcoords.x][Nextcoords.y].type+"_"+pixel.type
+        let coords={x: pixel.x, y: pixel.y}
+        sandGrid[Nextcoords.x][Nextcoords.y]=0
+        currentPixels = currentPixels.filter(p => !((p.x === Nextcoords.x && p.y === Nextcoords.y)))
+        Replace_pixel([coords],mix_to)
+    }
+}
 function Replace_pixel(Replace_Cells, replace_Type) {
     if (Replace_Cells.length > 0) {
         var coords = Replace_Cells[Math.floor(Math.random() * Replace_Cells.length)]
-        if (isInBounds(coords.x, coords.y)) {
+        if (isInBounds(coords.x, coords.y) && sandGrid[coords.x][coords.y].type!="invincible wall") {
             if (sandGrid[coords.x][coords.y].type != replace_Type && sandGrid[coords.x][coords.y] != 0) {
+
                 sandGrid[coords.x][coords.y] = 0
+                currentPixels= currentPixels.filter(p => !((p.x === coords.x && p.y === coords.y)))
                 createPixel(coords.x, coords.y, replace_Type)
             }
             else { Replace_Cells.splice(Replace_Cells.indexOf(coords), 1); }
@@ -965,7 +1011,7 @@ function Replace_pixel(Replace_Cells, replace_Type) {
 }
 function Priority_move(Priority_Cells_1, Priority_Cells_2, pixel) {
     let moved = false
-    if (Priority_Cells_1.length > 0) {
+    if (Priority_Cells_1.length > 0 ) {
         while (Priority_Cells_1.length > 0) {
             var coords = Priority_Cells_1[Math.floor(Math.random() * Priority_Cells_1.length)]
             var newx = coords.x
@@ -979,11 +1025,17 @@ function Priority_move(Priority_Cells_1, Priority_Cells_2, pixel) {
                 Priority_Cells_1.splice(Priority_Cells_1.indexOf(coords), 1);
             }
 
-
-            if (isInBounds(newx, newy) && sandGrid[newx][newy] != 0) {
+            if (isInBounds(newx, newy) && sandGrid[newx][newy] != 0&& pixel.movetime>=100) {
                 if (sandGrid[newx][newy].typeData.weight < pixel.typeData.weight && (sandGrid[newx][newy].typeData.category == "liquid" || sandGrid[newx][newy].typeData.category == "gas")) {
                     moved = true
                     pixelSwap(pixel, sandGrid[newx][newy])
+                    pixel.movetime=0
+                }
+            }
+            else if(isInBounds(newx, newy) && sandGrid[newx][newy] != 0){
+                if (sandGrid[newx][newy].typeData.weight < pixel.typeData.weight && (sandGrid[newx][newy].typeData.category == "liquid" || sandGrid[newx][newy].typeData.category == "gas")) {
+                    pixel.movetime += (pixel.typeData.weight - sandGrid[newx][newy].typeData.weight);
+                    console.log(pixel.movetime)
                 }
             }
 
@@ -1005,16 +1057,21 @@ function Priority_move(Priority_Cells_1, Priority_Cells_2, pixel) {
                     Priority_Cells_2.splice(Priority_Cells_2.indexOf(coords), 1);
                 }
 
-                if (isInBounds(newx, newy) && sandGrid[newx][newy] != 0) {
+                if (isInBounds(newx, newy) && sandGrid[newx][newy] != 0&& pixel.movetime>=100) {
                     if (sandGrid[newx][newy].typeData.weight < pixel.typeData.weight && (sandGrid[newx][newy].typeData.category == "liquid" || sandGrid[newx][newy].typeData.category == "gas")) {
                         moved = true
                         pixelSwap(pixel, sandGrid[newx][newy])
+                        pixel.movetime=0
+                    }
+                }
+                else if(isInBounds(newx, newy) && sandGrid[newx][newy] != 0){
+                    if (sandGrid[newx][newy].typeData.weight < pixel.typeData.weight && (sandGrid[newx][newy].typeData.category == "liquid" || sandGrid[newx][newy].typeData.category == "gas")) {
+                        pixel.movetime += (pixel.typeData.weight - sandGrid[newx][newy].typeData.weight);
                     }
                 }
             }
 
         }
-
     }
 
 }
@@ -1061,6 +1118,7 @@ function pixelLogic(pixel) {
                 if (Math.random() * 100 < chance) {
                     var NextCoords = behaviorCoords(x, y, bi, bj)
                     spreadHeat(pixel, NextCoords.x, NextCoords.y)
+                    Mix_pixel(pixel,NextCoords)
                     if (single_behavior == "11") {
                         Priority_Cells_1.push(NextCoords)
                     }
@@ -1115,8 +1173,8 @@ function updateInterval() {
                 let pixel = currentPixels[i];
                 pixelLogic(pixel);
             }
-            updateGrid();
         }
+        updateGrid();
     }, tickSpeed);
 }
 
@@ -1165,6 +1223,7 @@ function resizeCanvas() {
 }
 
 window.addEventListener("resize", resizeCanvas);
+selected_pixel_paragraph.textContent = "sand"
 let currentType = "sand"
 resizeCanvas();
 

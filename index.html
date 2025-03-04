@@ -18,6 +18,7 @@
                     <button class="category" data-category="solid">Solids</button>
                     <button class="category" data-category="liquid">Liquids</button>
                     <button class="category" data-category="gas">Gas</button>
+                    <button class="category" data-category="life">Life</button>
                     <button class="category" data-category="particles">Particles</button>
                     <button class="category" data-category="celestial_bodies">Celestial bodies</button>
                     <button class="category" data-category="weapons">Weapons</button>
@@ -28,25 +29,28 @@
                 <!--spot for buttons !-->
             </div>
             <div id ="settings_container">
-                <label for="brush_size_slider" style="color:white">Brush size</label>
+                <label for="brush_size_slider" >Brush size</label>
                 <input type="range" id="brush_size_slider" min="1" max="40" value="1">
-                <span id="brush_value"  style="color:white">1</span>
-                <label for="cell_size_slider" style="color:white">Cell size</label>
+                <span id="brush_value"  >1</span>
+                <label for="cell_size_slider" >Cell size</label>
                 <input type="range" id="cell_size_slider" min="1" max="50" value="1">
-                <span id="cell_value"  style="color:white">1</span>
-                <label for="tick_speed_slider" style="color:white">Tick speed</label>
+                <span id="cell_value"  >1</span>
+                <label for="tick_speed_slider" >Tick speed(how long each tick lasts in miliseconds)</label>
                 <input type="text" id="tick_speed_slider" value="10">
                 <button id="clear_button">Clear</button>
                 <button id="pause_button">Pause</button>
             </div>
                 </div>
                 <div style="display: flex;flex-direction: row; ">
-                <p style="color:white"> Number of pixels:</p>
-                <p id="pixel_number_paragraph" style="color: white";></p>
-                <p style="color:white; margin-left:5%"> pixel type:</p>
-                <p id="pixel_type_paragraph" style="color:white";></p>
-                <p style="color:white; margin-left:5%"> pixel temperature:</p>
-                <p id="pixel_temperature_paragraph" style="color:white";></p>
+                <p > Number of pixels:</p>
+                <p id="pixel_number_paragraph" ;></p>
+                <p style=" margin-left:5%"> Selected pixel type:</p>
+                <p id="selected_pixel_paragraph" ;></p>
+                <p style=" margin-left:5%">Hovered pixel type:</p>
+                <p id="pixel_type_paragraph" ;></p>
+                <p style=" margin-left:5%"> pixel temperature:</p>
+                <p id="pixel_temperature_paragraph" ;></p>
+                
                 </div>
                 <script src="script.js"></script>
         </div>
